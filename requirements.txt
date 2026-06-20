@@ -1,0 +1,7 @@
+# Exact versions used to produce the reported numbers (Python 3.12).
+# Newer minor versions reproduce the qualitative results; pin these for bit-level reproduction.
+numpy==2.4.4
+scipy==1.17.1
+scikit-learn==1.8.0
+shap==0.52.0
+matplotlib==3.10.8
