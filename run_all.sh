@@ -1,10 +1,30 @@
 #!/usr/bin/env bash
-# Reproduce every number and figure in the paper, in order.
+# Reproduce theorem verification, empirical analyses and figures.
+# Usage:  DATA_DIR=./data bash run_all.sh
 set -e
-python 01_envelope_wdbc.py
-python 02_contraction_wdbc.py
-python 03_deep_transfer_digits.py
-python 04_fig1_envelope.py
-python 05_fig2_compound_transfer.py
-python 06_fig3_infrastructure.py
-echo "Done. Figures in ./img/ ; result grids in ./*.npz"
+export DATA_DIR="${DATA_DIR:-./data}"
+echo "== 1. Theorem verification (no data required) =="
+python src/theory/verify_separation.py
+python src/theory/verify_epsilon_dormant.py
+python src/theory/verify_theorem.py
+
+echo "== 2. Empirical analyses (require \$DATA_DIR=$DATA_DIR) =="
+python src/analysis/reviewer_addendum.py
+python src/analysis/reviewer_addendum2.py
+python src/analysis/reviewer_addendum3.py
+# core envelope / monitor / adversarial / multimodal / resource analyses:
+for f in src/analysis/analyze*.py; do
+  echo "-- $f"; python "$f" || echo "   (skipped: $f — check data availability)"
+done
+
+echo "== 3. Figures =="
+python src/figures/make_fig_theorem.py
+python src/figures/make_figs.py
+python src/figures/make_figs2.py
+python src/figures/make_fig3.py
+python src/figures/make_fig_resdeg.py
+python src/figures/make_fig_multiarch.py
+python src/figures/make_fig_transformer.py || echo "   (Fig 5 needs transformer_results.json from the HF runner)"
+python src/figures/make_pillar3.py
+
+echo "== done. Figures (*.png) and results (*.json) are in the working directory. =="

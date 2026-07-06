@@ -1,7 +1,12 @@
-# Exact versions used to produce the reported numbers (Python 3.12).
-# Newer minor versions reproduce the qualitative results; pin these for bit-level reproduction.
-numpy==2.4.4
-scipy==1.17.1
 scikit-learn==1.8.0
-shap==0.52.0
+scipy==1.17.1
+numpy==2.4.4
+pandas==3.0.2
 matplotlib==3.10.8
+xgboost==3.3.0
+lightgbm==4.6.0
+shap==0.52.0
+# for the foundation-model runner (optional; needs network access to Hugging Face):
+# torch>=2.2
+# transformers>=4.44
+# datasets>=2.20

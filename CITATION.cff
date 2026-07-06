@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite the manuscript."
+title: "The Competence Envelope: certifying when AI and its explanations can be trusted"
+authors:
+  - family-names: Shakhovska
+    given-names: Nataliya
+    affiliation: Lviv Polytechnic National University
+    orcid: "https://orcid.org/0000-0002-6875-8534"
+  - family-names: Izonin
+    given-names: Ivan
+    affiliation: Lviv Polytechnic National University
+    orcid: "https://orcid.org/0000-0002-9761-0096"
+  - family-names: Mitoulis
+    given-names: Stergios A.
+    affiliation: University of Birmingham
+license: MIT
+year: 2026
+version: "1.1.0"

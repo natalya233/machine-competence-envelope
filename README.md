@@ -1,70 +1,111 @@
-# Machine competence under compound stress — reproducible code
+# The Competence Envelope: certifying when AI and its explanations can be trusted
 
-Open code for the *Nature Machine Intelligence* Perspective **"Machine competence under compound stress: certifying when AI and its explanations can be trusted"** (N. Shakhovska, I. Izonin, S. A. Mitoulis).
+Reference implementation and reproducibility code for the manuscript
 
-Every figure and every reported number is produced by the scripts here from public datasets and open-source libraries only. No proprietary data or models are used. Released under the MIT licence.
+> **Prediction certification cannot replace explanation certification: a competence envelope for trustworthy AI under compound stress**
+> Nataliya Shakhovska, Ivan Izonin (Lviv Polytechnic National University); Stergios A. Mitoulis (University of Birmingham).
 
-## What it computes
+The paper proves a **separation theorem**: monitoring what a model *predicts* is, within the class of certification-time prediction-law functionals, provably insufficient to certify whether it can be trusted. A reliable model and a compromised one can be made identical to every prediction-side certificate (coverage, accuracy, calibration — to machine precision) yet differ arbitrarily in the fidelity of their *explanations* and in behaviour under shift. The two certificates are organised by a **competence envelope**: the region of operating conditions over which predictions and explanations can jointly be trusted.
 
-A **competence envelope** is the region of operating conditions in which a (model, explainer) pair has *both* bounded prediction reliability (conformal coverage) and bounded explanation fidelity (faithfulness + stability). These scripts measure that envelope, its contraction under compound stress, and test whether the contraction law transfers across domains.
+This repository reproduces every figure, theorem verification, and reported number from fixed seeds.
 
-## Requirements
+---
 
-Python 3.12 and the packages in `requirements.txt`:
+## Repository layout
+
+```
+.
+├── src/
+│   ├── theory/        # numerical verification of the theorems
+│   │   ├── verify_separation.py       # Theorem 1 (exact separation): max|f−f'|=0, KS=0, fidelity separates
+│   │   ├── verify_epsilon_dormant.py  # Theorem 2 (ε-dormant approximate separation)
+│   │   └── verify_theorem.py          # Proposition 1 (existence, star-shape, two binding cones)
+│   ├── analysis/      # empirical envelope, monitor, adversarial, multimodal, resource, breadth
+│   │   ├── analyze*.py
+│   │   ├── reviewer_addendum.py       # monitor ablation, clean-certify poisoning + cue audit,
+│   │   │                              # calibration-scales-with-n, interaction bootstrap CI
+│   │   ├── reviewer_addendum2.py      # weighted-conformal comparator; multimodal temp-scaling baseline
+│   │   └── reviewer_addendum3.py      # SHAP-harmonised explanation drift across 5 architectures
+│   ├── figures/       # figure generators (make_*.py) -> PNGs
+│   └── manuscript/    # docx builders (Node.js + docx-js): article, SI, cover letter
+├── data/              # place public datasets here (see data/README.md)
+├── results/           # JSON/NPY outputs (generated)
+├── figures/           # generated figure PNGs
+├── requirements.txt
+├── run_all.sh         # end-to-end reproduction
+└── LICENSE
+```
+
+## Quick start
 
 ```bash
+python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
+
+# 1. Verify the theorems (no data needed — synthetic constructions)
+python src/theory/verify_separation.py
+python src/theory/verify_epsilon_dormant.py
+python src/theory/verify_theorem.py
+
+# 2. Reproduce the empirical analyses (needs data/ — see below)
+export DATA_DIR=./data
+python src/analysis/reviewer_addendum.py     # monitor ablation, clean-certify poisoning, etc.
+python src/analysis/reviewer_addendum2.py     # weighted conformal; multimodal baselines
+
+# 3. Regenerate figures
+python src/figures/make_figs.py               # Fig 2–3 (envelope, cross-domain)
+python src/figures/make_fig_theorem.py        # Fig 1 (separation theorem)
+# ... (see run_all.sh for the full list)
 ```
 
-The datasets (Wisconsin Diagnostic Breast Cancer; scikit-learn handwritten digits) ship with scikit-learn, so **no network access or data download is needed**.
+All scripts read data from `$DATA_DIR` (default `./data`) and write intermediate `.npy`/`.json`
+and figure `.png` files to the working directory. Run from the repository root.
 
-## Reproduce everything
+## Reproducing the theorem (no data required)
+
+The core result is verified on controlled constructions and requires no external data:
+
+| Script | Verifies | Key output |
+|---|---|---|
+| `verify_separation.py` | Theorem 1 (exact) | max\|f−f'\| = 0; coverage/accuracy/ECE Δ = 0; KS = 0; fidelity 1.00→0.19; deployment acc 0.82→0.41 |
+| `verify_epsilon_dormant.py` | Theorem 2 (ε-dormant) | prediction gaps grow O(ε) from 0 (coverage gap ≤ 0.005 at ε = 0.1); structural fidelity gap ≈ 0.4 throughout |
+| `verify_theorem.py` | Proposition 1 | envelope non-empty; 0 star-shape violations / 121 cells; coverage binds first on drift, fidelity first on scarcity |
+
+## Data
+
+The empirical study uses **public** data only. See [`data/README.md`](data/README.md) for sources and
+expected filenames. In brief:
+
+- **Telegram (information integrity)** — public war-reporting channel posts (`telegram_2026.csv`).
+- **Reddit climate discourse** — Harvard Dataverse `doi:10.7910/DVN/NL06IX` (`data/climate/Climate_Dataset/...`).
+- **Clinical tabular** — Wisconsin Diagnostic Breast Cancer (bundled with scikit-learn).
+- **CMU-MOSI** — public multimodal sentiment features (`mosi_features.npz`).
+- **Eight text benchmarks** (breadth study) and **transformer backbones** — via the optional
+  foundation-model runner (`src/analysis` + Hugging Face; needs network access).
+
+## Foundation-model runner (optional)
+
+Reproducing Fig 5 (foundation-model backbones) and the cross-dataset breadth study requires
+Hugging Face `transformers`/`datasets` and network access. The runner (`run_transformer_envelope.py`,
+`run_hf_datasets.py`) computes frozen mean-pooled embeddings for DistilBERT-multilingual, XLM-R and
+MiniLM and re-runs the identical envelope protocol; outputs drop into the same JSON format the
+figure scripts consume.
+
+## Rebuilding the manuscript (optional)
+
+The `.docx` article, Supplementary Information and cover letter are built with Node.js and `docx`:
 
 ```bash
-bash run_all.sh
+npm install -g docx
+NODE_PATH=$(npm root -g) node src/manuscript/build2.js          # article (expects figures/*.png)
+NODE_PATH=$(npm root -g) node src/manuscript/build_si.js        # supplementary information
+NODE_PATH=$(npm root -g) node src/manuscript/build_coverletter.js
 ```
-
-This runs the three experiments (writing result grids to `*.npz`) and renders the three figures to `img/`. Total runtime is a few minutes on a laptop CPU. Random seeds are fixed (integers 1–8), so results are deterministic.
-
-## Files
-
-| Script | Produces | Paper item |
-|---|---|---|
-| `01_envelope_wdbc.py` | `exp_results.npz` — coverage / stability / accuracy / silent-error over drift × scarcity (WDBC, gradient-boosted trees + SHAP) | Fig. 1 |
-| `02_contraction_wdbc.py` | `contraction.npz` — joint certified margin *g* and contraction-law fit over scarcity × contamination (WDBC) | Fig. 2a,b |
-| `03_deep_transfer_digits.py` | `deep_transfer.npz` — deep MLP on digits 3-vs-8 with SmoothGrad explanation, conformal stability certificate (no network constant), and contraction-law fit for the transfer test | Fig. 2c,d |
-| `04_fig1_envelope.py` | `img/fig1_envelope.png` | Fig. 1 |
-| `05_fig2_compound_transfer.py` | `img/fig2_compound_transfer.png` | Fig. 2 |
-| `06_fig3_infrastructure.py` | `img/fig3_infrastructure.png` (schematic) | Fig. 3 |
-
-Full method specifications (operating-condition construction, conformal protocol, the randomized-smoothing stability certificate, and the bootstrap) are in the paper's Supplementary Information.
-
-## Expected key results
-
-These print to stdout when you run the experiments; reviewers can check them directly.
-
-**`01_envelope_wdbc.py` (WDBC, drift × scarcity)**
-- Shapley efficiency: `max |sum(phi) + base − margin| ≈ 1e-14` (faithfulness exact for trees).
-- Conformal coverage degrades along **drift** (≈ 0.90 → 0.77), almost flat in scarcity.
-- Explanation stability degrades along **scarcity** (≈ 0.07 → 0.37), almost flat in drift.
-- The two certificates therefore bind on **different** axes (separable).
-
-**`02_contraction_wdbc.py` (WDBC, scarcity × contamination)**
-- Prediction-error interaction coefficient **c = 0.27, 95% CI [0.18, 0.36]** (bootstrap over seeds) → **super-additive** (significant).
-- Explanation-stability interaction: not significant (additive).
-- Joint certified margin *g* is positive only in the low-stress corner.
-
-**`03_deep_transfer_digits.py` (digits 3-vs-8 MLP, scarcity × contamination)**
-- SmoothGrad explanation stability degrades under contamination (≈ 0.05 → 0.16) and leaves the certified band — the explanation certificate works on a **deep** model, with no network Lipschitz constant.
-- Prediction-error interaction coefficient **c = −0.02, 95% CI [−0.23, 0.19]** → **additive** (not significant).
-- **Transfer test:** WDBC c = 0.27 vs digits c = −0.02 → the contraction law's interaction is **domain-specific, not invariant** (the strong form of hypothesis H2 is not supported).
-
-Small numerical differences (±0.01) across platforms/BLAS are expected; the qualitative conclusions are stable.
 
 ## Citation
 
-If you use this code, please cite the Perspective (see the manuscript for the full reference) and this repository.
+See [`CITATION.cff`](CITATION.cff). If you use this code, please cite the manuscript.
 
-## Licence
+## License
 
-MIT — see `LICENSE`.
+MIT — see [`LICENSE`](LICENSE).
