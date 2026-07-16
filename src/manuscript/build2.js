@@ -178,19 +178,13 @@ children.push(new Paragraph({ spacing: { after: 60 },
     run({ t: "¹Lviv Polytechnic National University, Lviv, Ukraine.  ²School of Engineering, University of Birmingham, Birmingham, UK.  ", size: SMALL, i: true }),
     run({ t: "Correspondence: nataliia.b.shakhovska@lpnu.ua  ·  ORCID: N.S. 0000-0002-6875-8534, I.I. 0000-0002-9761-0096.", size: SMALL, i: true }) ] }));
 
-// ---- Abstract ----
-children.push(new Paragraph({ spacing: { before: 120, after: 60 },
-  children: [new TextRun({ text: "Abstract", font: FONT, size: HEAD2, bold: true })] }));
+// ---- Summary paragraph ----
 children.push(para([
-  "Accuracy, calibration and conformal coverage measure how well a model performs, not the conditions under which its performance can be trusted. We show that these prediction-side diagnostics are blind to an important class of deployment failure. A data-poisoning attack on real propaganda channels drives model steerability to 88% while matched accuracy ",
-  I("rises"),
-  " from 0.73 to 0.89 and conformal coverage holds at its target; the only signal that tracks the capture is the drift of the model's attribution profile (",
-  I("r"),
-  " = 0.79). We prove that this blindness is unavoidable. A ",
+  "Artificial-intelligence systems increasingly make consequential judgments — which patient is deteriorating, which building is safe to enter, whether an image is authentic — and are trusted on the strength of how accurately and confidently they predict. The safeguards that certify them are correspondingly prediction-based: accuracy, calibration and conformal coverage all measure how well a model performs. Whether such checks can also guarantee that a model is trustworthy, rather than merely accurate, has remained unclear. Here we prove that they cannot. We establish a ",
   I("separation theorem"),
-  " shows that a reliable model and a compromised one can be made identical to every prediction-side certificate, with coverage, accuracy and calibration equal to machine precision, yet differ arbitrarily in the fidelity of their explanations and in their behaviour under shift. Within the class of certification-time prediction-law functionals, detecting the failure provably requires reading the model's structure and not only its sampled behaviour, so explanation certification becomes a necessary condition for trust. We organise the two certificates through a ",
+  " showing that a reliable model and a compromised one can be made identical to every prediction-side certificate — with accuracy, calibration and coverage equal to machine precision — yet differ arbitrarily in the fidelity of their explanations and in their behaviour when operating conditions change; detecting the failure provably requires examining how a model decides, not only what it predicts. We organize the two certificates as a ",
   I("competence envelope"),
-  ": the region of operating conditions over which predictions and explanations can jointly be trusted. Over four instrumented axes of deployment stress (distribution drift, data scarcity, adversarial contamination and resource degradation) the certificates fail on different axes, conformal coverage under temporal drift and explanation stability under scarcity and model compression, so neither substitutes for the other. Computed from unlabelled inputs, the joint certificate anticipates deployment error up to six years ahead (Spearman \u03c1 = 0.90 on climate discourse) and, used as an abstention gate, cuts error by 28%. Across three multimodal systems spanning text, tabular, acoustic and visual signals, gating late fusion by each channel's certificate rather than its confidence recovers the single-best-modality oracle under sensor failure. The two-certificate structure holds across eleven datasets and eight model classes, from linear and tree-ensemble models to three multilingual transformers. Certifying the reasons a model gives is thus a measurable and actionable requirement for trustworthy deployment, from conflict-zone infrastructure to adversarial information ecosystems.",
+  ", the region of operating conditions over which predictions and explanations can jointly be trusted, and show across eleven datasets and eight model classes — from linear and tree-ensemble models to multilingual transformers and a large language model — that it is measurable, can be monitored without labels, and can be acted upon by systems that defer rather than fail silently. Certifying the reasons an artificial-intelligence system gives, and not only its answers, is therefore necessary — not optional — for certifying trust against failures that its predictions alone cannot reveal.",
 ]));
 
 // ---- Introduction ----
@@ -210,10 +204,10 @@ children.push(para([
   "This paper advances a single claim and traces its consequences. Our central result is a theorem. Monitoring what a model ", I("predicts"),
   " is, within the class of functionals of its prediction behaviour, provably insufficient to certify whether it can be trusted. The ", I("separation theorem"),
   " makes this exact: a reliable model and a compromised one can be made identical to every prediction-side certificate (conformal coverage, accuracy, calibration, confidence) while differing arbitrarily in the fidelity of their ", I("explanations"),
-  " and in their behaviour under shift. A matching lower bound shows that no monitor built from a model's predictions alone detects this class of failure above chance, and that detecting it requires reading the model's structure. Certifying the reasons a model gives therefore becomes a necessary condition for trust, and the rest of this paper is evidence for that claim and its consequences. To organise the two certificates we introduce the ",
+  " and in their behaviour under shift. A matching lower bound shows that no monitor built from a model's predictions alone detects this class of failure above chance, and that detecting it requires reading the model's structure. Certifying the reasons a model gives therefore becomes a necessary condition for certifying against this class of failure, and the rest of this paper is evidence for that claim and its consequences. To organise the two certificates we introduce the ",
   I("competence envelope"),
   ", the region of operating conditions over which a system's judgments ", I("and the reasons it gives"),
-  " are jointly trustworthy: a provably non-trivial region whose boundary is set, direction by direction, by whichever certificate fails first. The envelope can also be acted upon. A label-free monitor senses in real time when a system has left it and degrades gracefully, preferring a verifiable “I do not know here” to a confident, well-explained error. The empirical sections span adversarial information ecosystems, multimodal deployment, clinical data and post-conflict infrastructure, across eleven datasets and eight model classes from linear models to multilingual transformers. Together they show that the separation is real, general and consequential, and they map the measurable, actionable property we call ",
+  " are jointly trustworthy: a provably non-trivial region whose boundary is set, direction by direction, by whichever certificate fails first. The envelope contracts along four independently instrumented axes of deployment stress — distribution drift, data scarcity, adversarial contamination and resource degradation — with the prediction certificate failing under drift and the explanation certificate under scarcity and model compression, so that neither substitutes for the other. It can also be acted upon. A label-free monitor senses in real time when a system has left the envelope and degrades gracefully, preferring a verifiable “I do not know here” to a confident, well-explained error; computed from unlabelled inputs alone it anticipates deployment error up to six years ahead (Spearman ρ = 0.90 on climate discourse) and, used as an abstention gate, cuts error by 28%. The empirical sections span adversarial information ecosystems — where a data-poisoning attack drives a model’s controllability to 88% while its accuracy rises and its coverage holds, and only the drift of its attribution profile (r = 0.79) reveals the capture — multimodal deployment, where gating late fusion by each channel’s certificate rather than its confidence recovers the single-best-modality oracle under sensor failure, clinical data and post-conflict infrastructure, across eleven datasets and eight model classes from linear models to multilingual transformers and a large language model. Together they show that the separation is real, general and consequential, and they map the measurable, actionable property we call ",
   I("machine competence"), ".",
 ]));
 
@@ -243,7 +237,7 @@ children.push(para([
   "This is not a gap between neighbouring methods but a ", I("structural"),
   " one, and the separation theorem locates it precisely. Every framework in the trustworthy-machine-learning canon — statistical learnability and generalisation bounds, PAC-Bayes, calibration and proper scoring rules, selective prediction, split-conformal coverage, distribution-shift and domain-adaptation bounds, and certified adversarial robustness — is a ",
   I("prediction-side"),
-  " guarantee in the exact sense of Theorem 1: each is a functional of the model’s input–output behaviour together with labels. By that theorem, no such guarantee, however tightened, can certify the class of failures in which a model’s explanation has drifted while its predictions are untouched; the entire canon lies on one side of the separation. Explainable AI sits on the other side but supplies no ",
+  " guarantee in the exact sense of Theorem 1: each is a functional of the model’s input–output behaviour together with labels. By that theorem, no such guarantee, however tightened, can certify — from certification-time prediction-law information — the class of failures in which a model’s explanation has drifted while its predictions are untouched; the entire prediction-side canon lies on one side of the separation, and structural methods that read weights, gradients or activations (mechanistic interpretability, gradient-based audits) lie on the other, with the explanation certificate. Explainable AI sits on that structural side but supplies no ",
   I("certificate"),
   ": it produces attributions",
   cite("lime", "shaporig", "gradcam"),
@@ -252,7 +246,7 @@ children.push(para([
 ]));
 children.push(para([
   "What is missing from the literature is therefore not a better estimator but a ", I("necessary condition"),
-  " that no existing theory states: that trust requires certifying the explanation, not only the prediction. Stacking existing methods — conformal coverage, a robustness ball, an attribution map — cannot supply it, because each ingredient is prediction-side or uncertified, and because the stressors interact, so a guarantee proved under drift alone need not survive drift with scarcity. Related work does not merely lack the joint object; by Theorem 1 it lies provably outside it. This is the primitive we introduce: explanation fidelity certified as a function of where a system operates, coupled to prediction reliability in one region with a provable boundary (Table 1).",
+  " that no existing theory states: that certifying against this class of failure requires the explanation, not only the prediction. Stacking existing methods — conformal coverage, a robustness ball, an attribution map — cannot supply it, because each ingredient is prediction-side or uncertified, and because the stressors interact, so a guarantee proved under drift alone need not survive drift with scarcity. Related work does not merely lack the joint object; by Theorem 1 the prediction-side canon lies provably outside it. This is the primitive we introduce: explanation fidelity certified as a function of where a system operates, coupled to prediction reliability in one region with a provable boundary (Table 1).",
 ]));
 children.push(para([
   "Recent flagship studies sharpen the gap. Label-light detectors of unreliable generation",
@@ -312,14 +306,14 @@ children.push(para([
 
 children.push(h2("Why prediction certification cannot replace explanation certification"));
 children.push(para([
-  "The central claim of this work is a theorem, not a definition: monitoring what a model predicts is provably insufficient to certify whether it can be trusted, and monitoring how it decides is not an optional interpretability layer but a strictly more powerful test. We make this precise. Let a ",
+  "The central claim of this work is a theorem, not a definition: within a precise class of certification-time functionals, monitoring what a model predicts is provably insufficient to certify whether it can be trusted, and monitoring how it decides is not an optional interpretability layer but an irreducible second test (the class and its boundary are made precise in ‘Scope of the theorem’ below). We make this precise. Let a ",
   I("prediction-side certificate"),
   " be any functional of the joint law of (", I("X"), ", ", I("Y"), ", ", I("f"), "(", I("X"),
   ")) on the certification distribution — this class contains conformal coverage, accuracy, calibration error, Brier score, confidence and every other quantity computable from the model’s input–output behaviour on sampled data. Let the ",
   I("explanation certificate"),
   " instead read the model’s sensitivity map ", I("A"), S("f"), "(", I("x"), ") = ∇", S("x"), I("s"), S("f"),
   "(", I("x"), "), a structural functional of how the model computes, and set F = 1 − ", I("D"),
-  "(φ", S("f"), ", φ", S("0"), ") for the global sensitivity profile φ. The distinction is exactly behavioural versus structural.",
+  "(φ", S("f"), ", φ", S("0"), ") for the global sensitivity profile φ. The distinction is exactly behavioural versus structural: prediction-side certificates are functionals of the model's prediction-side information (the certification-time law of its inputs, labels and outputs), whereas the explanation certificate is a functional of its structural information (how the decision is produced), and the two are formally separated by a non-identifiability lemma (Methods).",
 ]));
 children.push(para([
   B("Theorem 1 (prediction–explanation separation). "),
@@ -330,13 +324,17 @@ children.push(para([
 ]));
 children.push(para([
   I("Proof. "),
-  "Construct a dormant coordinate ", I("v"), " that is identically zero on the support of ", I("P"), ". Let ", I("f"), " place zero weight on ", I("v"), " and let ", I("f"),
+  "The construction is an ", I("existence witness"),
+  " — a single hard instance that realises the non-identifiability, in the standard form of an impossibility argument — not a claim that deployed models typically contain such a coordinate. Construct a dormant coordinate ", I("v"), " that is identically zero on the support of ", I("P"), ". Let ", I("f"), " place zero weight on ", I("v"), " and let ", I("f"),
   "′ be identical except for weight ", I("W"), " on ", I("v"), ". (i) On supp(", I("P"), "), ", I("s"), S("f"), "′(", I("x"), ") = ", I("s"), S("f"), "(", I("x"), ") + ", I("W"), "·", I("v"), "(", I("x"), ") = ", I("s"), S("f"),
   "(", I("x"), "), so the two models induce the ", I("same"),
   " joint law of (X, Y, f(X)); every functional of that law agrees, exactly. (ii) The sensitivity profiles differ only in the ", I("v"),
   "-coordinate, by |", I("W"), "|; choosing ", I("W"), " makes ", I("D"),
   "(φ, φ′) ≥ β. (iii) Let ", I("P"), "′ move a fraction of mass to points with ", I("v"), " = 1; there ", I("s"), S("f"),
   "′ exceeds ", I("s"), S("f"), " by ", I("W"), ", flipping those predictions and depressing accuracy by γ. ∎",
+]));
+children.push(para([
+  "The dormant coordinate is idealised but not pathological: it is the exact form of a planted backdoor trigger, of a spurious feature that is rare on the training distribution but common under shift, and of a sensor channel dormant under nominal conditions and active under stress — the failure modes the empirical sections exhibit. Theorem 2 removes the idealisation, showing the separation degrades only gracefully as the coordinate becomes merely near-dormant rather than exactly dormant, which is the regime of the continuous and language-model experiments.",
 ]));
 children.push(para([
   B("Corollary 1.1 (detection lower bound). "),
@@ -356,7 +354,7 @@ children.push(para([
 ]));
 children.push(para([
   B("Corollary 1.2. "),
-  "The data-poisoning attack reported below (", B("Fig. 8"),
+  "The data-poisoning attack reported below (", B("Fig. 9"),
   ") is one realisation of this construction (a planted cue dormant on the clean support), so its invisibility to accuracy and coverage is not an empirical accident but a consequence of Theorem 1.",
 ]));
 children.push(para([
@@ -483,7 +481,7 @@ children.push(figlegend([
 ]));
 children.push(para([
   "Third, the certificate gives ", I("early warning"),
-  " of silent failure, on both axes. On the scarcity axis the explanation-stability certificate is withheld once data become scarce (n = 300, profile distance 0.33) while conformal coverage is still 0.91 and accuracy 0.72, while the explanation side flags degradation the prediction side does not yet reveal. On the drift axis the reliability certificate is withheld from February (coverage 0.89), just as confident errors begin to accelerate; abstaining there keeps the system out of the May regime in which the confident-but-wrong rate has quadrupled to 9% (Fig. 2b). The study exercises three of the four Ω axes (drift, scarcity and contamination; resource degradation is instrumented separately in Fig. 7) and makes no claim of universality; its purpose is to show that the envelope, the joint certificate and the early-warning behaviour are measurable and reproducible on real, deployment-scale data. The same signature appears in other deployed systems: synthetic-media detectors degrade sharply on unseen generators, a cross-generator generalisation gap",
+  " of silent failure, on both axes. On the scarcity axis the explanation-stability certificate is withheld once data become scarce (n = 300, profile distance 0.33) while conformal coverage is still 0.91 and accuracy 0.72, while the explanation side flags degradation the prediction side does not yet reveal. On the drift axis the reliability certificate is withheld from February (coverage 0.89), just as confident errors begin to accelerate; abstaining there keeps the system out of the May regime in which the confident-but-wrong rate has quadrupled to 9% (Fig. 2b). The study exercises three of the four Ω axes (drift, scarcity and contamination; resource degradation is instrumented separately in Fig. 8) and makes no claim of universality; its purpose is to show that the envelope, the joint certificate and the early-warning behaviour are measurable and reproducible on real, deployment-scale data. The same signature appears in other deployed systems: synthetic-media detectors degrade sharply on unseen generators, a cross-generator generalisation gap",
   cite("ojha"),
   ", and an explainable knee-MRI model’s reliability swings across imaging planes (AUC 0.72–0.96) under one explainer",
   cite("shakhovskaxai"),
@@ -532,23 +530,53 @@ children.push(h2("Cross-dataset generality"));
 children.push(para([
   "Finally we test breadth across tasks. Using the DistilBERT-multilingual embeddings we instrument the envelope on eight standard text-classification benchmarks spanning news (AG News, DBpedia), product and film reviews (Amazon, Yelp, IMDB, Rotten Tomatoes, SST-2) and social media (TweetEval), with covariate drift induced by evaluating on principal-component bands increasingly distant from the training core. The explanation-stability certificate degrades under scarcity on ",
   I("all eight"),
-  " datasets (S falling monotonically as training data grow, from ≈0.37 at n = 200 to ≈0.27 at n = 1,500 on every set). The prediction certificate degrades under the induced covariate shift on the datasets where that shift is substantial: coverage drops of 0.45 on DBpedia, 0.24 on Amazon, 0.13 on IMDB and 0.09 on SST-2, and holds, correctly, on the homogeneous sentiment sets where principal-component banding induces little genuine shift (Supplementary Table S16). This is the honest and expected pattern: the scarcity certificate is universal across tasks, while the drift certificate fires in proportion to the covariate shift actually present. Together with the two real corpora, the clinical benchmark and the multimodal systems, the competence envelope has been measured across eleven datasets and eight model classes spanning linear, tree-ensemble and transformer families in this study.",
+  " datasets (S falling monotonically as training data grow, from ≈0.37 at n = 200 to ≈0.27 at n = 1,500 on every set). The prediction certificate degrades under the induced covariate shift on the datasets where that shift is substantial: coverage drops of 0.45 on DBpedia, 0.24 on Amazon, 0.13 on IMDB and 0.09 on SST-2, and holds, correctly, on the homogeneous sentiment sets where principal-component banding induces little genuine shift (Supplementary Table S16). This is the honest and expected pattern: the scarcity certificate is universal across tasks, while the drift certificate fires in proportion to the covariate shift actually present. Together with the two real corpora, the clinical benchmark and the multimodal systems, the competence envelope has been measured across eleven datasets and, with the language-model experiment below, model classes spanning linear, tree-ensemble, transformer and large-language-model families in this study.",
+]));
+
+children.push(h2("Certifying a large language model’s explanations"));
+children.push(para([
+  "The strongest form of the reviewer’s objection is that our evidence used interpretable features and a probe over frozen embeddings. We therefore reproduce the construction on a genuine large language model with ",
+  I("true token-level attributions"),
+  ". We adapt Qwen2.5-1.5B to the Telegram forwarding-intensity task by low-rank adaptation (LoRA, rank 16) on the anchor month, so the certified decision function is the language model’s own classification head, not an auxiliary model on its representations. Explanations are computed with layer integrated gradients over the input-embedding layer (pad-token baseline), aggregated into an L2-normalised vocabulary-level attribution profile φ on a fixed reference set; the explanation-stability statistic is S = 1 − cos(φ, φ", S("0"),
+  "), the direct analogue of the coefficient-profile drift used for the linear model. The two certificates are unchanged (",
+  B("Fig. 6"), ").",
+]));
+children.push(para([
+  "The prediction certificate behaves on the language model exactly as the theory requires. Under temporal drift its conformal coverage falls monotonically from 0.886 in the anchor month to 0.811 five months out, tracking a parallel fall in accuracy from 0.70 to 0.59, so the acceptance boundary at 0.88 admits the first months and excludes the later ones — the same envelope boundary reported for the linear model, now on the language model’s own outputs. The ",
+  I("separation of Theorem 1 then transfers to the language model directly"),
+  ". Planting a rare trigger phrase in a fraction ρ of one class during adaptation, certifying on clean held-out data without recalibration, and appending the trigger to negatives at deployment, the clean-data prediction certificate is untouched — coverage stays at 0.88–0.90 across all ρ, indistinguishable from the unpoisoned model — while the backdoor becomes fully effective: attack success rises from 0.39 at ρ = 0 to 0.99 at ρ = 0.2 and 1.00 thereafter. A model driven to complete controllability is thus certified as reliable by every clean-data prediction-side check, on a real language model, not a linear surrogate.",
+]));
+children.push(figimg("figures/fig_llm_modeB.png", 624, 176, "Figure 6"));
+children.push(figlegend([
+  B("Fig. 6 | The separation holds on a large language model (LoRA-adapted Qwen2.5-1.5B, integrated-gradient attributions). "),
+  "(a) Conformal coverage of the language model degrades under temporal drift (0.886 → 0.811), tracking accuracy. (b) The integrated-gradient explanation profile is markedly less stable for the language model than for the linear model, remaining at or above the 0.20 threshold across adaptation-set sizes with large run-to-run spread — explanation stability is a strictly harder resource to certify than coverage. (c) Poisoning separation: clean-data conformal coverage is invariant to the poison fraction ρ while attack success saturates at 1.0, the separation of Theorem 1 instantiated on a real language model.",
+]));
+children.push(para([
+  "A second observation sharpens the separation rather than qualifying it. Attributions computed on the clean reference distribution place negligible mass on the trigger — its share of the integrated-gradient profile stays near zero across all poison fractions — even at ρ where the backdoor is fully effective. This is not a failure of the explanation certificate but a further instance of the same principle: an explanation ",
+  I("audit"),
+  " conducted on clean data is as blind to the planted backdoor as a prediction-side certificate is, because the trigger is dormant on that distribution and leaves no trace in either object. What the separation theorem forbids is certification from clean-distribution information of ",
+  I("either"),
+  " kind; the structural signature the theorem guarantees becomes visible only to an audit that probes the dormant coordinate. This makes precise which explanation audits qualify: the linear model’s structural profile is the input-independent coefficient magnitude, which carries the planted weight and so exposes the cue (its top-attribution features are dominated by the trigger, above), whereas an integrated-gradient audit evaluated on clean inputs is input-dependent and, with the trigger absent from those inputs, cannot. Establishing that a targeted, deployment-side explanation audit exposes the trigger — attributions on triggered inputs concentrating on it — is a short constructive addition we leave to a follow-up; the present result already shows the negative half on a real language model, that neither a clean-data prediction certificate nor a clean-data explanation audit detects the backdoor.",
+]));
+children.push(para([
+  B("Scope of the language-model result. "),
+  "We report this without overstatement. Qwen2.5-1.5B is a genuine autoregressive language model with true integrated-gradient attributions, which answers the objection that the earlier evidence was a probe; we do not claim flagship (7–8B) scale, though the construction is size-agnostic. The integrated-gradient profile is noisier under scarcity than the linear coefficient profile (large seed spread at n = 2,400), so we treat the language-model stability trend as descriptive rather than as a clean monotone law.",
 ]));
 
 children.push(h2("A label-free competence monitor anticipates silent failure"));
 children.push(para([
   "For the envelope to be useful at deployment it must be computable ", I("without"),
-  " the labels that are unavailable once a model is live. All three operating-condition signals satisfy this: input drift δ is read from an unlabelled discriminator, explanation stability from the model’s attribution profile on incoming data, and predictive uncertainty from the conformal non-conformity of new inputs. Treating their combination as a label-free competence monitor, we find it anticipates silent failure on the real temporal drift of both corpora. As the Telegram model is carried from its January anchor across the following months, its true error climbs from 0.13 to 0.35 and the Reddit model’s from 0.15 (2019) to 0.35 (2023); the monitor, computed without any test labels, tracks this rise (Spearman ρ = 0.60 for Telegram, 0.90 for Reddit; Fig. 6b). A deployer watching the monitor would therefore see competence draining away before any labelled outcome confirmed it.",
+  " the labels that are unavailable once a model is live. All three operating-condition signals satisfy this: input drift δ is read from an unlabelled discriminator, explanation stability from the model’s attribution profile on incoming data, and predictive uncertainty from the conformal non-conformity of new inputs. Treating their combination as a label-free competence monitor, we find it anticipates silent failure on the real temporal drift of both corpora. As the Telegram model is carried from its January anchor across the following months, its true error climbs from 0.13 to 0.35 and the Reddit model’s from 0.15 (2019) to 0.35 (2023); the monitor, computed without any test labels, tracks this rise (Spearman ρ = 0.60 for Telegram, 0.90 for Reddit; Fig. 7b). A deployer watching the monitor would therefore see competence draining away before any labelled outcome confirmed it.",
 ]));
 children.push(para([
   "This makes the certificate ", I("actionable"),
-  ". Used as a gate that abstains on the inputs it cannot certify, it converts silent error into safe deferral: answering only the most certifiable 70% of inputs cuts deployment error from 0.29 to 0.23 on Telegram and from 0.32 to 0.27 on Reddit, and answering 50% cuts it to 0.19 and 0.23 respectively (Fig. 6a). Crucially, the two certificates are ",
+  ". Used as a gate that abstains on the inputs it cannot certify, it converts silent error into safe deferral: answering only the most certifiable 70% of inputs cuts deployment error from 0.29 to 0.23 on Telegram and from 0.32 to 0.27 on Reddit, and answering 50% cuts it to 0.19 and 0.23 respectively (Fig. 7a). Crucially, the two certificates are ",
   I("complementary, not redundant"),
-  ". Their certified margins are near-uncorrelated across operating points (Telegram −0.20, Reddit −0.02), and in predicting a model’s true error the joint certificate beats either side alone, most clearly in the climate domain, where adding the explanation side lifts the explained variance from 0.57 to 0.67 (Fig. 6c). The prediction side dominates under drift and the explanation side under scarcity, so only their union tracks competence across the whole operating-condition space, the same independence seen in Fig. 2, now shown to carry decision-relevant information a single certificate would miss.",
+  ". Their certified margins are near-uncorrelated across operating points (Telegram −0.20, Reddit −0.02), and in predicting a model’s true error the joint certificate beats either side alone, most clearly in the climate domain, where adding the explanation side lifts the explained variance from 0.57 to 0.67 (Fig. 7c). The prediction side dominates under drift and the explanation side under scarcity, so only their union tracks competence across the whole operating-condition space, the same independence seen in Fig. 2, now shown to carry decision-relevant information a single certificate would miss.",
 ]));
-children.push(figimg("figures/fig_real3.png", 624, 224, "Figure 6"));
+children.push(figimg("figures/fig_real3.png", 624, 224, "Figure 7"));
 children.push(figlegend([
-  B("Fig. 6 | A label-free competence monitor anticipates silent failure and enables safe abstention. "),
+  B("Fig. 7 | A label-free competence monitor anticipates silent failure and enables safe abstention. "),
   "(a) Risk–coverage curves: abstaining on the least-certifiable inputs reduces error on the answered inputs, on both corpora, under real temporal drift. (b) The monitor, computed without test labels, tracks each deployment period’s true error (Spearman ρ = 0.60 Telegram, 0.90 Reddit). (c) Predicting true error from the certificate signals: the joint certificate matches or beats the prediction-side and explanation-side alone, and the two margins are near-uncorrelated, so they capture complementary failure modes. All values are measured and reproducible.",
 ]));
 children.push(h2("Resource degradation: the fourth independent axis"));
@@ -556,14 +584,14 @@ children.push(para([
   "The three axes exercised so far (drift, scarcity and contamination) all concern the data environment. The fourth axis of Ω, resource degradation, concerns the compute environment: in a crisis zone the model runs on damaged, battery-powered or bandwidth-limited edge hardware, so inference operates under a compressed model, a shrunk calibration buffer and a reduced sensor bandwidth. We instrument all three on our real corpora and ask whether resource degradation is a genuinely independent stressor or merely a restatement of scarcity.",
 ]));
 children.push(para([
-  "Model compression (Fig. 7a) gives the clearest answer. Pruning a fraction p of the smallest-magnitude classifier weights is a clean proxy for compute-budget reduction. At n = 2,400 training examples and moderate drift (evaluation on March data), pruning p = 0.70 drives explanation-stability drift to S = 0.26, exceeding the certificate's limit of 0.20 — while conformal coverage remains at 0.88, still inside its target. Coverage only falls below its threshold at heavier pruning (p ≥ 0.85). The pattern is the same as for the other axes: the explanation certificate fires before the prediction certificate. Resource degradation is therefore a genuinely fourth independent stressor: it degrades the decision function in a way the data environment does not, and the explanation side detects it first.",
+  "Model compression (Fig. 8a) gives the clearest answer. Pruning a fraction p of the smallest-magnitude classifier weights is a clean proxy for compute-budget reduction. At n = 2,400 training examples and moderate drift (evaluation on March data), pruning p = 0.70 drives explanation-stability drift to S = 0.26, exceeding the certificate's limit of 0.20 — while conformal coverage remains at 0.88, still inside its target. Coverage only falls below its threshold at heavier pruning (p ≥ 0.85). The pattern is the same as for the other axes: the explanation certificate fires before the prediction certificate. Resource degradation is therefore a genuinely fourth independent stressor: it degrades the decision function in a way the data environment does not, and the explanation side detects it first.",
 ]));
 children.push(para([
-  "The memory constraint on the calibration buffer (Fig. 7b) adds a second resource-side mechanism. Conformal coverage requires maintaining a buffer of calibration scores; when that buffer is small (cal_n < 100, as when on-device memory is limited), coverage becomes unreliable regardless of how much training data was available, a mechanism structurally distinct from training-data scarcity. The interaction with model compression is additive: a pruned model (p = 0.85) with a tiny calibration buffer (cal_n = 20) pushes coverage to 0.84, the lowest observed cell, while S is already at 0.27. Finally, reducing acoustic-visual channel bandwidth on CMU-MOSI (Fig. 7c) raises deployment error from 0.43 at full bandwidth to 0.51 at 15%, a monotone degradation that mirrors the feature-drift axis and can be detected by the same label-free discriminator without test labels. Across all three resource mechanisms, the envelope's response is qualitatively identical to its response on the other three axes: certificates fail at the boundary, the explanation side leads, and gating on the certificate converts resource-induced failure into safe deferral rather than a silent, confident wrong answer.",
+  "The memory constraint on the calibration buffer (Fig. 8b) adds a second resource-side mechanism. Conformal coverage requires maintaining a buffer of calibration scores; when that buffer is small (cal_n < 100, as when on-device memory is limited), coverage becomes unreliable regardless of how much training data was available, a mechanism structurally distinct from training-data scarcity. The interaction with model compression is additive: a pruned model (p = 0.85) with a tiny calibration buffer (cal_n = 20) pushes coverage to 0.84, the lowest observed cell, while S is already at 0.27. Finally, reducing acoustic-visual channel bandwidth on CMU-MOSI (Fig. 8c) raises deployment error from 0.43 at full bandwidth to 0.51 at 15%, a monotone degradation that mirrors the feature-drift axis and can be detected by the same label-free discriminator without test labels. Across all three resource mechanisms, the envelope's response is qualitatively identical to its response on the other three axes: certificates fail at the boundary, the explanation side leads, and gating on the certificate converts resource-induced failure into safe deferral rather than a silent, confident wrong answer.",
 ]));
-children.push(figimg("figures/fig_resdeg.png", 624, 246, "Figure 7"));
+children.push(figimg("figures/fig_resdeg.png", 624, 246, "Figure 8"));
 children.push(figlegend([
-  B("Fig. 7 | Resource degradation is the fourth independent axis of the competence envelope. "),
+  B("Fig. 8 | Resource degradation is the fourth independent axis of the competence envelope. "),
   "(a) Under model compression (pruning fraction p), explanation-stability drift S exceeds its limit at p = 0.70 while conformal coverage is still within target (n = 2,400, evaluation on March Telegram data); crosses mark where S first exceeds the limit. The explanation certificate leads the prediction certificate, as on the other three axes. (b) A shrinking calibration buffer (memory constraint) destabilises conformal coverage independently of training-data scarcity; the effect compounds with model compression. (c) Reducing acoustic-visual channel bandwidth on CMU-MOSI raises deployment error monotonically. All values are measured and reproducible.",
 ]));
 children.push(para([
@@ -583,9 +611,9 @@ children.push(para([
   I("certified on clean anchor data and never recalibrated"),
   " — the certification-on-P premise of the theorem — deploying on attacked inputs drives attack success from 0.24 to 0.89 as ρ rises to 0.8, while conformal coverage computed at certification time never leaves its target band (0.90 → 0.89) and cannot foresee the capture. Second, the planted cue is genuinely dormant on the clean distribution (its prevalence in the clean corpus is zero), and the explanation drift is localised on it, not a generic reaction to distributional change: as ρ grows, the cue’s share of the structural attribution mass rises monotonically and it comes to dominate the most-changed features (half of the twenty largest attribution increases are cue features). The explanation certificate is therefore reading the migration of decision mass onto the cue, exactly the structural signature the theorem predicts.",
 ]));
-children.push(figimg("figures/fig_adversarial.png", 624, 232, "Figure 8"));
+children.push(figimg("figures/fig_adversarial.png", 624, 232, "Figure 9"));
 children.push(figlegend([
-  B("Fig. 8 | A silent data-poisoning attack that prediction-side certificates cannot see. "),
+  B("Fig. 9 | A silent data-poisoning attack that prediction-side certificates cannot see. "),
   "An attacker plants a rare cue in a fraction ρ of amplified-class Telegram training messages and appends it to arbitrary content at deployment. (a) Attack success rises to 0.88 while conformal coverage holds at 0.90 and matched-validation accuracy improves, yet both prediction-side signals are blind or misleading. (b) The explanation-stability certificate tracks the capture (r = 0.79 with attack success): the attribution profile drifts as decision mass migrates onto the planted cue. Means over seeds; all values measured.",
 ]));
 children.push(h2("Competence-gated fusion makes multimodal systems fail-safe"));
@@ -597,13 +625,13 @@ children.push(para([
   ", not by its confidence. We tested this on three multimodal systems from different domains and sensor types: Reddit climate posts (text + author/community tabular data), a Kyiv wartime news channel (text + behavioural signals; 81,000 messages with emoji reactions, 2021–2026, labelled distress versus support), and the CMU-MOSI audiovisual sentiment benchmark (spoken language + acoustic-visual channels). In each, per-modality classifiers are fused three ways: naïve averaging, confidence-gated weighting, and competence-gated weighting, in which each modality is weighted by its label-free certificate — its excess distribution drift beyond the certified state, combined with its conformal confidence.",
 ]));
 children.push(para([
-  "Under modality-specific failure the ordering is consistent and the margin large (Fig. 9). When the text channel fails on Reddit, competence-gated fusion holds error at 0.31 against 0.45 for both naïve and confidence-gated fusion; when the tabular channel fails, 0.24 against 0.33; on the Kyiv corpus, 0.23 against 0.29; and on CMU-MOSI, when the language channel fails, competence gating routes decisions to the intact acoustic-visual channel and lands exactly on the single-best-modality oracle (0.431 versus 0.511 for both baselines). In clean conditions it costs nothing. The failure of the strongest baseline is instructive. ",
+  "Under modality-specific failure the ordering is consistent and the margin large (Fig. 10). When the text channel fails on Reddit, competence-gated fusion holds error at 0.31 against 0.45 for both naïve and confidence-gated fusion; when the tabular channel fails, 0.24 against 0.33; on the Kyiv corpus, 0.23 against 0.29; and on CMU-MOSI, when the language channel fails, competence gating routes decisions to the intact acoustic-visual channel and lands exactly on the single-best-modality oracle (0.431 versus 0.511 for both baselines). In clean conditions it costs nothing. The failure of the strongest baseline is instructive. ",
   I("confidence-gating is fooled everywhere"),
   ", matching naïve fusion to three decimal places, because a degraded modality does not become diffident; it becomes confidently wrong, and confidence weighting keeps listening to it. Only the label-free certificate, which measures where each channel sits relative to its certified operating region rather than how sure it sounds, identifies the failed modality. One honest boundary: when the sole competent channel is itself the one that fails (text on the Kyiv corpus, whose behavioural backup is weak and drifting), no gating scheme rescues the system: the envelope then correctly prescribes abstention rather than fusion. Competence-gating, in other words, is not a trick for extracting accuracy; it is the routing layer that makes multimodal systems degrade the way safety-critical systems should: onto their still-competent channels when those exist, and to a refusal when they do not.",
 ]));
-children.push(figimg("figures/fig_multimodal.png", 624, 235, "Figure 9"));
+children.push(figimg("figures/fig_multimodal.png", 624, 235, "Figure 10"));
 children.push(figlegend([
-  B("Fig. 9 | Competence-gated late fusion under modality-specific failure, across three multimodal systems. "),
+  B("Fig. 10 | Competence-gated late fusion under modality-specific failure, across three multimodal systems. "),
   "Deployment error of naïve, confidence-gated and competence-gated late fusion under clean conditions and under degradation of each channel, for (a) Reddit climate (text + tabular), (b) a Kyiv wartime news channel (text + behavioural) and (c) CMU-MOSI (spoken language + acoustic-visual). Green bars mark the single-best-modality oracle. Competence gating tracks the oracle under failure and is free in clean conditions; confidence gating is indistinguishable from naïve fusion because degraded channels remain confidently wrong. Means over seeds; all values measured.",
 ]));
 children.push(h1("Discussion"));
@@ -693,7 +721,7 @@ children.push(para([
 children.push(para([
   "A recently deployed pipeline lets us test this on real, consequential data. To characterise damage to 17 bridges along the Irpin river west of Kyiv (crossings on the Bucha–, Hostomel– and Irpin–Kyiv routes left inaccessible by active hostilities in early 2022), it read damage from open Sentinel-1 synthetic-aperture-radar imagery, using the fall in interferometric coherence before and after shelling as the signal, and attached to every asset a level-of-knowledge (LoK) grade derived from the reliability of its pre-event data",
   cite("kopiika"),
-  ". That LoK grade is, in our terms, a hand-built competence certificate, and re-analysing the published per-bridge data shows exactly what it buys (Fig. 10). A naïve damage rule (coherence change above a fixed threshold) declares ten of the seventeen bridges damaged. Gating those verdicts by the certificate splits them: eight are certified (the reliably damaged assets, from the destroyed B1, B2 and B9 to moderate cases), but two, B11 and B16, are ",
+  ". That LoK grade is, in our terms, a hand-built competence certificate, and re-analysing the published per-bridge data shows exactly what it buys (Fig. 11). A naïve damage rule (coherence change above a fixed threshold) declares ten of the seventeen bridges damaged. Gating those verdicts by the certificate splits them: eight are certified (the reliably damaged assets, from the destroyed B1, B2 and B9 to moderate cases), but two, B11 and B16, are ",
   I("deferred under low evidential reliability"),
   ": their apparent damage clears the naïve threshold, yet their pre-event data are graded unreliable, so the certificate withholds the verdict and defers them to inspection rather than treating an unverified 'damaged' call as established and letting it enter the restoration queue. A third asset, B15, is flagged in the opposite direction: a high-damage verdict carried by only medium-reliability data, exactly the high-consequence, reduced-confidence case a certificate should mark for priority verification. Because the level-of-knowledge grade certifies data reliability rather than the full joint prediction-and-explanation object, this is best read as an evidential-reliability analogue of the envelope. With seventeen assets it is a demonstration, not a statistical claim, but it is a real one: on genuinely inaccessible, war-damaged infrastructure, certificate-gating defers out-of-envelope calls before they enter a reconstruction ledger measured in hundreds of billions.",
 ]));
@@ -702,9 +730,9 @@ children.push(para([
   I("resilience certificate"),
   " that travels with each automated assessment (Box 2), recording the operating point, the certified coverage and fidelity bounds, the competence-signal calibration, and the prescribed action, gives stakeholders what a bare prediction cannot: a machine-readable statement of when the assessment may be trusted and the point at which a human must take over, turning an opaque output into an accountable input to a standards-driven reconstruction decision.",
 ]));
-children.push(figimg("figures/fig_bridges.png", 566, 269, "Figure 10"));
+children.push(figimg("figures/fig_bridges.png", 566, 269, "Figure 11"));
 children.push(figlegend([
-  B("Fig. 10 | Certificate-gated damage assessment of 17 war-damaged Irpin bridges. "),
+  B("Fig. 11 | Certificate-gated damage assessment of 17 war-damaged Irpin bridges. "),
   "Each bridge from the published Sentinel-1 analysis of ref. ",
   cite("kopiika"),
   " is placed by its data reliability (pre-event interferometric coherence; the level-of-knowledge certificate) and its apparent damage (coherent change). A naïve threshold on apparent damage alone declares ten bridges damaged; the certificate certifies eight and defers two verdicts that rest on low-reliability data (B11, B16, red rings) rather than treating them as established damage, while flagging one high-damage verdict carried by only medium-reliability data (B15, amber ring) for priority verification. Here the level-of-knowledge grade acts as an evidential-reliability certificate — a data-quality analogue of the competence envelope rather than the full joint prediction-and-explanation certificate — and deferral under low evidential reliability, not spurious confidence, is the safe output for assets whose evidence cannot yet support a claim.",
@@ -762,7 +790,25 @@ children.push(para([
 children.push(h1("Methods"));
 children.push(para([
   B("Operating-condition space. "),
-  "The four axes of Ω are instrumented by estimable, monotone stress signals: distribution drift via population-stability indices, Kolmogorov–Smirnov and maximum-mean-discrepancy statistics; data scarcity via effective sample size, local density and label noise; adversarial contamination via out-of-distribution and adversarial-shift estimators; and resource degradation via latency, memory and energy budgets. The experiments below exercise all four axes: drift, scarcity and contamination in the main envelope study, and resource degradation as a dedicated fourth-axis extension (Fig. 7), instrumented through model compression, calibration-buffer constraints and channel-bandwidth reduction.",
+  "The four axes of Ω are instrumented by estimable, monotone stress signals: distribution drift via population-stability indices, Kolmogorov–Smirnov and maximum-mean-discrepancy statistics; data scarcity via effective sample size, local density and label noise; adversarial contamination via out-of-distribution and adversarial-shift estimators; and resource degradation via latency, memory and energy budgets. The experiments below exercise all four axes: drift, scarcity and contamination in the main envelope study, and resource degradation as a dedicated fourth-axis extension (Fig. 8), instrumented through model compression, calibration-buffer constraints and channel-bandwidth reduction.",
+]));
+children.push(para([
+  B("Information-theoretic formulation. "),
+  "The separation is informational rather than algorithmic. Define the ",
+  I("prediction-side information"), " of a model ", I("f"), " as the certification-time joint law ", I("I"), S("P"),
+  "(", I("f"), ") = L", S("P"), "(X, Y, ", I("f"), "(X)); a ", I("prediction-side certificate"),
+  " is any measurable functional C(", I("f"), ") = Φ(", I("I"), S("P"), "(", I("f"),
+  ")). This classifies procedures by the information they may use, so calibration, conformal prediction, uncertainty quantification and confidence-based selective prediction all belong to one informational class whenever they depend only on the certification-time law of (X, Y, ", I("f"),
+  "(X)). Define the ", I("structural information"), " ", I("I"), S("S"), "(", I("f"),
+  ") as information describing the internal decision mechanism, and take the explanation certificate to be a functional Ψ(", I("I"), S("S"), "(", I("f"),
+  ")) with fidelity F : S → [0, 1]. Prediction-side certification is behavioural; explanation-side certification is structural.",
+]));
+children.push(para([
+  B("Lemma 1 (non-identifiability of structural information). "),
+  "The map ", I("I"), S("P"), " → ", I("I"), S("S"), " is not injective: prediction-side information does not determine structural information. The separation construction is the witness — two models with ", I("I"), S("P"), "(", I("f"), ") = ", I("I"), S("P"), "(", I("f"),
+  "′) yet ", I("I"), S("S"), "(", I("f"), ") ≠ ", I("I"), S("S"), "(", I("f"),
+  "′) — so structural information cannot be reconstructed from observable prediction behaviour. Theorem 1 is the quantitative form: for any fidelity gap β and accuracy margin γ it exhibits a pair realising the non-identifiability with a controllable explanation-fidelity gap and deployment-accuracy gap. The question is therefore not whether prediction-side certification can be made more accurate, but whether prediction-side information is ",
+  I("in principle"), " sufficient; Lemma 1 and Theorem 1 show it is not.",
 ]));
 children.push(para([
   B("Theory and its verification. "),

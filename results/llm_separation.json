@@ -1,0 +1,47 @@
+[
+  {
+    "rho": 0.0,
+    "coverage": 0.891,
+    "accuracy": 0.748,
+    "attack": 0.392,
+    "cue_ig_mass": 0.003287544630296528,
+    "cue_share_top20": 0.0,
+    "seeds": 1
+  },
+  {
+    "rho": 0.2,
+    "coverage": 0.897,
+    "accuracy": 0.699,
+    "attack": 0.992,
+    "cue_ig_mass": 0.0020805517359673608,
+    "cue_share_top20": 0.0,
+    "seeds": 1
+  },
+  {
+    "rho": 0.4,
+    "coverage": 0.892,
+    "accuracy": 0.745,
+    "attack": 1.0,
+    "cue_ig_mass": 0.0008205322219831302,
+    "cue_share_top20": 0.0,
+    "seeds": 1
+  },
+  {
+    "rho": 0.6,
+    "coverage": 0.902,
+    "accuracy": 0.623,
+    "attack": 1.0,
+    "cue_ig_mass": 0.001299439229048811,
+    "cue_share_top20": 0.0,
+    "seeds": 1
+  },
+  {
+    "rho": 0.8,
+    "coverage": 0.88,
+    "accuracy": 0.528,
+    "attack": 1.0,
+    "cue_ig_mass": 0.002925700699868757,
+    "cue_share_top20": 0.0,
+    "seeds": 1
+  }
+]

@@ -53,8 +53,10 @@ python src/analysis/reviewer_addendum.py     # monitor ablation, clean-certify p
 python src/analysis/reviewer_addendum2.py     # weighted conformal; multimodal baselines
 
 # 3. Regenerate figures
-python src/figures/make_figs.py               # Fig 2–3 (envelope, cross-domain)
-python src/figures/make_fig_theorem.py        # Fig 1 (separation theorem)
+python src/analysis/mode_b/  # real-LLM (LoRA + integrated gradients) runner + README_ModeB.md
+src/figures/make_figs.py               # Fig 2–3 (envelope, cross-domain)
+python src/analysis/mode_b/  # real-LLM (LoRA + integrated gradients) runner + README_ModeB.md
+src/figures/make_fig_theorem.py        # Fig 1 (separation theorem)
 # ... (see run_all.sh for the full list)
 ```
 
