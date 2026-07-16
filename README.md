@@ -93,16 +93,7 @@ Hugging Face `transformers`/`datasets` and network access. The runner (`run_tran
 MiniLM and re-runs the identical envelope protocol; outputs drop into the same JSON format the
 figure scripts consume.
 
-## Rebuilding the manuscript (optional)
 
-The `.docx` article, Supplementary Information and cover letter are built with Node.js and `docx`:
-
-```bash
-npm install -g docx
-NODE_PATH=$(npm root -g) node src/manuscript/build2.js          # article (expects figures/*.png)
-NODE_PATH=$(npm root -g) node src/manuscript/build_si.js        # supplementary information
-NODE_PATH=$(npm root -g) node src/manuscript/build_coverletter.js
-```
 
 ## Citation
 
