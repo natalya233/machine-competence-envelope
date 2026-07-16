@@ -1,14 +1,8 @@
 # Machine Competence Envelope — Knowledge Base
 
-**Project:** "Prediction certification cannot replace explanation certification: a competence envelope for trustworthy AI under compound stress"
-**Authors:** Nataliya Shakhovska¹, Ivan Izonin¹ (Lviv Polytechnic National University), Stergios A. Mitoulis² (University of Birmingham)
-**Correspondence:** nataliia.b.shakhovska@lpnu.ua
-**Target:** Nature (flagship) / realistic: Nature Machine Intelligence or top-ML venue
-**Repository:** https://github.com/natalya233/machine-competence-envelope
-
 ---
 
-## 1. Central claim (one sentence)
+## 1. Central claim
 
 Monitoring what a model *predicts* is provably insufficient to certify whether it can be trusted; certifying *how it decides* (its explanation) is a necessary condition — proved by a separation theorem and demonstrated across 11 datasets and 8 model classes.
 
@@ -16,7 +10,7 @@ Everything else in the paper is evidence for, and consequence of, this claim. Th
 
 ---
 
-## 2. Theory (all statements verified numerically)
+## 2. Theory
 
 ### Information-theoretic formulation (Methods + SI)
 - **Prediction-side information** I_P(f) = L_P(X, Y, f(X)) — the certification-time joint law. A prediction-side certificate = any measurable functional Φ(I_P(f)). Covers conformal coverage, accuracy, calibration/ECE, Brier, AUC, confidence, selective prediction.
@@ -162,55 +156,11 @@ Under one common explanation family (mean|SHAP| on fixed reference), S(n=300 vs 
 
 **Figure conventions applied:** on-image figure titles (suptitles) removed on all figures (captions live in document text); panel labels a/b/c kept; legend/label overlaps fixed in Figs 2, 4, 5, 6, 8, 9, 10; contrast/readability improved.
 
----
 
-## 5. Deliverables (in outputs)
-
-| File | Description |
-|------|-------------|
-| `Machine_competence_Article.docx` | Main paper — ~29 pp, 11 figures, 55 refs |
-| `Supplementary_Information.docx` | SI — proofs (incl. Lemma 1, Th.2 ε-dormant), tables S12–S19 |
-| `Cover_letter_and_significance.docx` | Nature cover letter + significance statement |
-| `competence_envelope_repo.zip` | Full reproducibility repository (v1.1.0) |
-| `competence_transformer_runner.zip` | Portable HF/transformer pipeline for Claude Code |
-| `llm_mode_b_runner.zip` | Mode B: real-LLM (LoRA + integrated gradients) envelope + separation runner |
-| Individual figure PNGs | Fig 2/3/5/6/8/9/10 exported separately |
-
-**Manuscript builders (Node.js docx-js):** `build2.js` (article), `build_si.js` (SI), `build_coverletter.js`. Build: `NODE_PATH=$(npm root -g) node build2.js`.
-
-**Abstract = Nature summary paragraph** (219 words, no "Abstract" heading, broad-audience first sentence, structure: broad → background → problem → "Here we prove" → result → implication).
 
 ---
 
-## 6. Co-author review response (Stergios Mitoulis, 53 comments) — STATUS
-
-**Tier 1 (writing/format) — DONE:** summary paragraph [131]; inline bold→italic [289]; 5 flagship refs (Farquhar/Zhou/Hofmann=Nature, Babic/Obermeyer=Science) + positioning [330]; 4 overstatements softened [231/279/283/293]; Methods/Results resource-degradation contradiction fixed [299]; bridges reframed [327]; resilient-AI control-loop paragraph [226]; Fig 1 font/label fixes [251/249/250/258].
-
-**Tier 2 (theorem) — DONE:** ε-dormant Theorem 2 + proof + verification [239/51]; unified structural functional A(f;P_ref) [236]; fixed certification procedure in Cor 1.1 [228]; Fig 1c traceability [247]; black-box corollary [242]; F-vs-S + nominal-0.90-vs-acceptance-0.88 + S/δ formulas [265/310/306]; **I_P/I_S formalism + Lemma 1 folded into Methods/SI**.
-
-**Tier 3 (compute, done on data) — DONE:** monitor ablation + CIs [287]; clean-certify poisoning + cue-dormancy audit [245/321]; interaction bootstrap CI [313]; calibration-scales-with-n [136]; weighted-conformal comparator [263]; **SHAP-harmonisation across 5 architectures [135]**.
-
-**Mode B (real LLM) — DONE (via Claude Code):** LoRA-Qwen2.5-1.5B + integrated gradients; drift certificate + Theorem-1 separation confirmed on a genuine LLM; clean-data explanation audit shown blind too (third separation instance). Constructive deployment-side cue audit = ~1 h follow-up, not claimed.
-
-**Still deferred (need HuggingFace/GPU):** frozen-embedding non-identifiability check [278]; PCA-banding redo [282]; full resource controls (quantization/dropout/latency) [318]; full multimodal ablation on tuned pipeline [324]; flagship (7–8B) LLM run.
-
----
-
-## 7. Publication assessment (honest, co-author view)
-
-| Venue | Estimated acceptance | Main risk |
-|-------|---------------------|-----------|
-| **Nature (flagship)** | ~5–12% | **Fit, not quality** — Nature rarely takes pure ML-theory/methodology; likely desk-rejected as "for NMI". Broad-significance framing needed. |
-| **Nature Machine Intelligence** | ~20–35% | Natural home; formal theorem + empirics + trustworthy-AI fits their profile. |
-| **Top-ML (NeurIPS/ICML) / JMLR / TMLR** | ~25–35% | Separation theorem + empirics above median. |
-
-**Strengths:** genuine impossibility theorem + detection lower bound; honest scope; ε-dormant closes the "support-trick" critique; real data; rigorous I_P/I_S formalism. **Risks:** journal fit (flagship); empirics solid but not landmark-scale (no direct LLM certification); "competence envelope" as a new concept may draw "repackaging" scepticism; datasets somewhat niche for Nature's "broad significance".
-
-**Highest-leverage next steps:** (1) certify a real LLM's explanations under the same axes (Mode B, Claude Code) — removes the biggest empirical objection; (2) presubmission inquiry to a Nature editor (½-page, cheap signal on desk-reject vs encourage); (3) prepare NMI in parallel as realistic plan B.
-
----
-
-## 8. Repository (v1.1.0) — structure & GitHub update
+## 5. Repository (v1.1.0) — structure & GitHub update
 
 ```
 src/theory/      verify_separation.py, verify_epsilon_dormant.py, verify_theorem.py
@@ -226,7 +176,7 @@ All paths normalised (data → `data/`, outputs cwd-relative). All 25 Python + 3
 
 ---
 
-## 9. Environment notes (for reproduction)
+## 6. Environment notes (for reproduction)
 
 - Build docx: `NODE_PATH=$(npm root -g) node build2.js`; docx-js is global.
 - Validate: `python /mnt/skills/public/docx/scripts/office/validate.py FILE.docx`.
@@ -234,8 +184,3 @@ All paths normalised (data → `data/`, outputs cwd-relative). All 25 Python + 3
 - pip needs `--break-system-packages`. Sandbox network reaches only github/pypi/npm/ubuntu (NOT HuggingFace) — transformer/HF steps run via Claude Code locally.
 - shap 0.52.0, xgboost, lightgbm available; MOSI features at `mosi_features.npz`.
 
----
-
-## 10. One-paragraph summary for the knowledge base
-
-This project proves, and demonstrates empirically, that certifying an AI model's predictions (accuracy, calibration, conformal coverage) is fundamentally insufficient to certify trust: a separation theorem shows a reliable and a compromised model can be made bitwise-identical to every prediction-side certificate yet differ arbitrarily in their explanations and in deployment behaviour, with a matching lower bound that no prediction-only monitor beats chance at detecting the difference. The two certificates are organised as a **competence envelope** over four stress axes; a label-free monitor built from it anticipates silent failure and enables safe abstention. Results span 11 datasets and 8 model classes (linear, tree-ensemble, transformer), a real data-poisoning attack invisible to accuracy/coverage, competence-gated multimodal fusion, and a war-damaged-infrastructure case study. The full reviewer response (53 comments) is implemented; the work is a strong candidate for Nature Machine Intelligence or a top-ML venue, and an ambitious shot at Nature flagship whose main risk is journal fit rather than quality.
