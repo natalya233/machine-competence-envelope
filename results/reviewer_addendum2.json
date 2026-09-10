@@ -1,0 +1,61 @@
+{
+  "weighted_conformal": {
+    "per_month": {
+      "1": {
+        "coverage_standard": 0.9253016323633783,
+        "coverage_weighted": 0.9231724627395316
+      },
+      "2": {
+        "coverage_standard": 0.9200769499825113,
+        "coverage_weighted": 0.9190276320391746
+      },
+      "3": {
+        "coverage_standard": 0.901875088115043,
+        "coverage_weighted": 0.9092062596926548
+      },
+      "4": {
+        "coverage_standard": 0.875947622329428,
+        "coverage_weighted": 0.875947622329428
+      },
+      "5": {
+        "coverage_standard": 0.8479793637145314,
+        "coverage_weighted": 0.8596732588134136
+      }
+    },
+    "note": "weighted conformal (density-ratio via discriminator) partially restores coverage under bounded drift; residual loss marks the envelope boundary"
+  },
+  "multimodal_baselines": {
+    "temperatures": {
+      "text": 0.7843489777227253,
+      "audio": 0.6952423755263566,
+      "vision": 2.1978235179115284
+    },
+    "scenarios": {
+      "clean": {
+        "naive": 0.2857142857142857,
+        "confidence_raw": 0.2813411078717201,
+        "confidence_tempscaled": 0.26239067055393583,
+        "drift_only": 0.2857142857142857,
+        "competence": 0.26384839650145775,
+        "oracle": 0.2653061224489796
+      },
+      "language_outage": {
+        "naive": 0.49271137026239065,
+        "confidence_raw": 0.49271137026239065,
+        "confidence_tempscaled": 0.478134110787172,
+        "drift_only": 0.49271137026239065,
+        "competence": 0.48833819241982507,
+        "oracle": 0.4752186588921283
+      },
+      "AV_outage": {
+        "naive": 0.2653061224489796,
+        "confidence_raw": 0.2653061224489796,
+        "confidence_tempscaled": 0.2653061224489796,
+        "drift_only": 0.2653061224489796,
+        "competence": 0.2653061224489796,
+        "oracle": 0.2653061224489796
+      }
+    },
+    "note": "confidence gating fails even with temperature scaling; competence gating reaches oracle under outage"
+  }
+}

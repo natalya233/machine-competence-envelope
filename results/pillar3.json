@@ -1,0 +1,33 @@
+{
+  "naive_damaged": [
+    "B1",
+    "B2",
+    "B3",
+    "B5",
+    "B6",
+    "B9",
+    "B11",
+    "B15",
+    "B16",
+    "B17"
+  ],
+  "silent_misreads": [
+    "B11",
+    "B16"
+  ],
+  "certified_damaged": [
+    "B1",
+    "B2",
+    "B3",
+    "B5",
+    "B6",
+    "B9",
+    "B15",
+    "B17"
+  ],
+  "borderline": [
+    "B15"
+  ],
+  "GP": 0.55,
+  "CCDT": 0.25
+}

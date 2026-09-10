@@ -1,0 +1,10 @@
+{
+  "note": "common explanation family: mean|SHAP| on fixed 120-sample reference; S=cosine drift of profile between n=300 and n=4000 (anchor Jan). Confirms the scarcity->instability trend of Fig 4 under one uniform explanation object across all architectures.",
+  "shap_S_by_arch": {
+    "logreg": 0.135,
+    "mlp": 0.28,
+    "gbdt": 0.322,
+    "xgb": 0.333,
+    "lgbm": 0.318
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "maxdiff": 0.0,
+  "cov_f": 0.882,
+  "cov_fp": 0.882,
+  "acc_f": 0.824,
+  "acc_fp": 0.824,
+  "ks": 0.0,
+  "D": 0.6474118456156697,
+  "attribution": "structural |df/dx|"
+}
