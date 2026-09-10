@@ -3,7 +3,7 @@
 Reference implementation and reproducibility code for the manuscript
 
 > **Prediction certification cannot replace explanation certification: a competence envelope for trustworthy AI under compound stress**
-> Nataliya Shakhovska, Ivan Izonin (Lviv Polytechnic National University); Stergios A. Mitoulis (University of Birmingham).
+> Nataliya Shakhovska, Ivan Izonin (Lviv Polytechnic National University); Stergios A. Mitoulis (University College London, Centre for Global Infrastructure Resilience).
 
 The paper proves a **separation theorem**: monitoring what a model *predicts* is, within the class of certification-time prediction-law functionals, provably insufficient to certify whether it can be trusted. A reliable model and a compromised one can be made identical to every prediction-side certificate (coverage, accuracy, calibration — to machine precision) yet differ arbitrarily in the fidelity of their *explanations* and in behaviour under shift. The two certificates are organised by a **competence envelope**: the region of operating conditions over which predictions and explanations can jointly be trusted.
 
@@ -53,10 +53,8 @@ python src/analysis/reviewer_addendum.py     # monitor ablation, clean-certify p
 python src/analysis/reviewer_addendum2.py     # weighted conformal; multimodal baselines
 
 # 3. Regenerate figures
-python src/analysis/mode_b/  # real-LLM (LoRA + integrated gradients) runner + README_ModeB.md
-src/figures/make_figs.py               # Fig 2–3 (envelope, cross-domain)
-python src/analysis/mode_b/  # real-LLM (LoRA + integrated gradients) runner + README_ModeB.md
-src/figures/make_fig_theorem.py        # Fig 1 (separation theorem)
+python src/figures/make_figs.py               # Fig 2–3 (envelope, cross-domain)
+python src/figures/make_fig_theorem.py        # Fig 1 (separation theorem)
 # ... (see run_all.sh for the full list)
 ```
 
@@ -93,7 +91,16 @@ Hugging Face `transformers`/`datasets` and network access. The runner (`run_tran
 MiniLM and re-runs the identical envelope protocol; outputs drop into the same JSON format the
 figure scripts consume.
 
+## Rebuilding the manuscript (optional)
 
+The `.docx` article, Supplementary Information and cover letter are built with Node.js and `docx`:
+
+```bash
+npm install -g docx
+NODE_PATH=$(npm root -g) node src/manuscript/build2.js          # article (expects figures/*.png)
+NODE_PATH=$(npm root -g) node src/manuscript/build_si.js        # supplementary information
+NODE_PATH=$(npm root -g) node src/manuscript/build_coverletter.js
+```
 
 ## Citation
 
